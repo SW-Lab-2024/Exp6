@@ -3,10 +3,7 @@ package graph;
 import lombok.Getter;
 import org.javatuples.Pair;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.PriorityQueue;
-import java.util.Queue;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Graph {
@@ -64,23 +61,27 @@ public class Graph {
     }
 
     public void makeAllConnectionsOneWay() {
-        for (Node node : this.graph) {
-            for (Edge edge : node.getEdges()) {
-                if (!edge.isDirected()) {
-                    edge.setDirected(true);
-                }
-            }
-        }
+        setDirectionForAllEdges(true);
     }
 
     public void makeAllConnectionsTwoWay() {
+        setDirectionForAllEdges(false);
+    }
+
+    private void setDirectionForAllEdges(boolean makeDirected) {
+        HashSet<Edge> visitedEdges = new HashSet<>();
+
         for (Node node : this.graph) {
             for (Edge edge : node.getEdges()) {
-                if (edge.isDirected()) {
-                    edge.setDirected(false);
+                if (!visitedEdges.contains(edge)) {
+                    if (makeDirected && !edge.isDirected()) {
+                        edge.setDirected(true);
+                    } else if (!makeDirected && edge.isDirected()) {
+                        edge.setDirected(false);
+                    }
+                    visitedEdges.add(edge);
                 }
             }
         }
     }
-
 }
