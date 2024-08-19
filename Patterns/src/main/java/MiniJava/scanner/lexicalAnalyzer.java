@@ -2,6 +2,7 @@ package MiniJava.scanner;
 
 import MiniJava.errorHandler.ErrorHandler;
 import MiniJava.scanner.token.Token;
+import MiniJava.scanner.token.TokenFacade;
 import MiniJava.scanner.type.Type;
 
 import java.util.regex.Matcher;
@@ -37,7 +38,7 @@ public class lexicalAnalyzer {
                         break;
                     }
 
-                    return new Token(t, matcher.group(t.name()));
+                    return TokenFacade.createToken(t, matcher.group(t.name()));
                 }
             }
         }
