@@ -1,12 +1,11 @@
 package graph;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class GraphTest {
 
@@ -17,11 +16,22 @@ public class GraphTest {
         Edge.createEdge(cityA, cityB, false, 5);
 
         Graph graph = new Graph(new ArrayList<>(List.of(cityA, cityB)));
-        graph.makeAllConnectionsOneWay();
 
-        // CityA should have a directed edge to CityB, but CityB should not have a directed edge back to CityA
-        assertTrue(cityA.getEdges().get(0).isDirected());
-        assertEquals(cityA.getEdges().get(0).getNodes().getValue0(), cityA);
+        Assertions.assertFalse(cityA.getEdges().get(0).isDirected());
+        Assertions.assertEquals(cityA.getEdges().get(0).getNodes().getValue0(), cityA);
+        Assertions.assertEquals(cityA.getEdges().get(0).getNodes().getValue1(), cityB);
+
+        Assertions.assertFalse(cityB.getEdges().get(0).isDirected());
+        Assertions.assertEquals(cityB.getEdges().get(0).getNodes().getValue0(), cityA);
+        Assertions.assertEquals(cityB.getEdges().get(0).getNodes().getValue1(), cityB);
+
+        graph.makeAllConnectionsOneWay();
+        // After the operation, CityA should have a directed edge to CityB, but CityB should not have a directed edge back to CityA
+
+        Assertions.assertTrue(cityA.getEdges().get(0).isDirected());
+        Assertions.assertEquals(cityA.getEdges().get(0).getNodes().getValue0(), cityA);
+        Assertions.assertEquals(cityA.getEdges().get(0).getNodes().getValue1(), cityB);
+        Assertions.assertTrue(cityB.getEdges().isEmpty());
     }
 
 }
