@@ -5,6 +5,7 @@ Object Oriented Design Patterns and Code Refactoring in Java
 
 ## Facade
 - کلاس ParserFacade یک اینترفیس ساده را برای کلاینت‌ها فراهمخ می‌کند و وابستگی و پیچیدگی پارسر را پنهان می‌کند. اگر پیاد‌ه‌سازی parser عوض شود، کلاینت نیازی به عوض کردن facade ندارد. همچنین Main را برای استفاده کردن از این Facade اپدیت می‌کنیم.
+- همچنین برای کلاس Token،‌یک Facade تعریف کرده‌ایم تا برای کلاینت‌ها ارتباط با عملکرد‌های مربوط به توکن تسهیل شود. این Facade، لاجیک ایجاد توکن و مشخص کردن تایپ آن را encapsulate می‌کند. همچنین lexicalAnalyzer برای استفاده از این Facade اپدیت شده است.
 
 ## Replace condition with polymorphism
 
