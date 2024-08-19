@@ -63,4 +63,14 @@ public class Graph {
         }
     }
 
+    public void makeAllConnectionsOneWay() {
+        for (Node node : this.graph) {
+            for (Edge edge : node.getEdges()) {
+                if (!edge.isDirected()) {
+                    edge.setDirected(true);
+                }
+            }
+        }
+    }
+
 }
