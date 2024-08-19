@@ -246,7 +246,7 @@ public class CodeGenerator {
         }
         Address temp = new DirectAddress(memory.getTemp(), t);
         ss.push(temp);
-        memory.add3AddressCode(Operation.ASSIGN, new DirectAddress(temp.num, varType.Address), new DirectAddress(symbolTable.getMethodReturnAddress(className, methodName), varType.Address), null);
+        memory.add3AddressCode(Operation.ASSIGN, new ImmediateAddress(temp.num, varType.Address), new DirectAddress(symbolTable.getMethodReturnAddress(className, methodName), varType.Address), null);
         memory.add3AddressCode(Operation.ASSIGN, new ImmediateAddress(memory.getCurrentCodeBlockAddress() + 2, varType.Address), new DirectAddress(symbolTable.getMethodCallerAddress(className, methodName), varType.Address), null);
         memory.add3AddressCode(Operation.JP, new DirectAddress(symbolTable.getMethodAddress(className, methodName), varType.Address), null, null);
 
