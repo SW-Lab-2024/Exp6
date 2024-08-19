@@ -10,6 +10,7 @@ import java.util.regex.Pattern;
 
 public class lexicalAnalyzer {
     private Matcher matcher;
+    private TokenFacade tokenFacade;
 
     public lexicalAnalyzer(java.util.Scanner sc) {
         StringBuilder input = new StringBuilder();
@@ -21,6 +22,7 @@ public class lexicalAnalyzer {
             tokenPattern.append(String.format("|(?<%s>%s)", tokenType.name(), tokenType.pattern));
         Pattern expression = Pattern.compile(tokenPattern.substring(1));
         matcher = expression.matcher(input.toString());
+        tokenFacade = new TokenFacade();
     }
 
     public Token getNextToken() {
@@ -38,7 +40,7 @@ public class lexicalAnalyzer {
                         break;
                     }
 
-                    return TokenFacade.createToken(t, matcher.group(t.name()));
+                    return tokenFacade.createToken(t, matcher.group(t.name()));
                 }
             }
         }

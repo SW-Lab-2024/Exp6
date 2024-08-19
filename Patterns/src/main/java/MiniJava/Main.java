@@ -4,14 +4,13 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 import MiniJava.errorHandler.ErrorHandler;
-import MiniJava.parser.ParserFacade;
+import MiniJava.parser.ParsingFacade;
 
 
 public class Main {
     public static void main(String[] args) {
-        Parser parser = new Parser();
         try {
-            Scanner scanner = new Scanner(new File("src/main/resources/code"))
+            Scanner scanner = new Scanner(new File("src/main/resources/code"));
             ParsingFacade parsingFacade = new ParsingFacade();
             // start parsing
             parsingFacade.parse(scanner);

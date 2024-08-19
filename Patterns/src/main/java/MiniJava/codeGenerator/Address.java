@@ -1,3 +1,5 @@
+package MiniJava.codeGenerator;
+
 public abstract class Address {
     public int num;
     public varType varType;
@@ -32,13 +34,3 @@ class IndirectAddress extends Address {
     }
 }
 
-class ImmediateAddress extends Address {
-    public ImmediateAddress(int num, varType varType) {
-        super(num, varType);
-    }
-
-    @Override
-    public String toString() {
-        return "#" + num;
-    }
-}
