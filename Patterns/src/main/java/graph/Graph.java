@@ -73,4 +73,14 @@ public class Graph {
         }
     }
 
+    public void makeAllConnectionsTwoWay() {
+        for (Node node : this.graph) {
+            for (Edge edge : node.getEdges()) {
+                if (edge.isDirected()) {
+                    edge.setDirected(false);
+                }
+            }
+        }
+    }
+
 }
