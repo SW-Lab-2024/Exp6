@@ -1,9 +1,6 @@
 package MiniJava.semantic.symbol;
 
-import MiniJava.codeGenerator.Address;
-import MiniJava.codeGenerator.Memory;
-import MiniJava.codeGenerator.TypeAddress;
-import MiniJava.codeGenerator.varType;
+import MiniJava.codeGenerator.*;
 import MiniJava.errorHandler.ErrorHandler;
 
 import java.util.ArrayList;
@@ -20,8 +17,8 @@ public class SymbolTable {
         mem = memory;
         klasses = new HashMap<>();
         keyWords = new HashMap<>();
-        keyWords.put("true", new Address(1, varType.Bool, TypeAddress.Imidiate));
-        keyWords.put("false", new Address(0, varType.Bool, TypeAddress.Imidiate));
+        keyWords.put("true", new ImmediateAddress(1, varType.Bool));
+        keyWords.put("false", new ImmediateAddress(0, varType.Bool));
     }
 
     public void setLastType(SymbolType type) {
