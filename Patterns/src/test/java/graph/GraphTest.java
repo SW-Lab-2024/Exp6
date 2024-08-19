@@ -34,4 +34,29 @@ public class GraphTest {
         Assertions.assertTrue(cityB.getEdges().isEmpty());
     }
 
+    @Test
+    public void testTwoWayConnections() {
+        Node cityA = new Node();
+        Node cityB = new Node();
+        Edge.createEdge(cityA, cityB, true, 5);
+
+        Graph graph = new Graph(new ArrayList<>(List.of(cityA, cityB)));
+
+        Assertions.assertTrue(cityA.getEdges().get(0).isDirected());
+        Assertions.assertEquals(cityA.getEdges().get(0).getNodes().getValue0(), cityA);
+        Assertions.assertEquals(cityA.getEdges().get(0).getNodes().getValue1(), cityB);
+        Assertions.assertTrue(cityB.getEdges().isEmpty());
+
+        graph.makeAllConnectionsTwoWay();
+        // After the operation, CityA and CityB should have a undirected edge to each other
+
+        Assertions.assertFalse(cityA.getEdges().get(0).isDirected());
+        Assertions.assertEquals(cityA.getEdges().get(0).getNodes().getValue0(), cityA);
+        Assertions.assertEquals(cityA.getEdges().get(0).getNodes().getValue1(), cityB);
+
+        Assertions.assertFalse(cityB.getEdges().get(0).isDirected());
+        Assertions.assertEquals(cityB.getEdges().get(0).getNodes().getValue0(), cityA);
+        Assertions.assertEquals(cityB.getEdges().get(0).getNodes().getValue1(), cityB);
+    }
+
 }
