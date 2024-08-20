@@ -32,6 +32,36 @@ public class Graph {
         }
     }
 
+    public String findFasterStrategy(Node source, Node destination, int timeUnit) {
+        // Save the current DistanceStrategy of the class
+        DistanceStrategy temp = distanceStrategy;
+
+        // Calculate distance using TrainStrategy (BFS)
+        TrainStrategy trainStrategy = new TrainStrategy();
+        trainStrategy.setTimeUnit(timeUnit);
+        this.setDistanceStrategy(trainStrategy);
+        this.calculateDistance(source);
+        int trainDistance = destination.getDistance();
+
+        // Calculate distance using BusStrategy (Dijkstra)
+        BusStrategy busStrategy = new BusStrategy();
+        this.setDistanceStrategy(busStrategy);
+        this.calculateDistance(source);
+        int busDistance = destination.getDistance();
+
+        // Back to the last state before the calling this method
+        setDistanceStrategy(temp);
+
+        // Compare the distance and return the best strategy
+        if (trainDistance < busDistance) {
+            return trainStrategy.getName();
+        } else if (busDistance < trainDistance) {
+            return busStrategy.getName();
+        } else {
+            return "Both strategy are equally fast";
+        }
+    }
+
     public void makeAllConnectionsOneWay() {
         setDirectionForAllEdges(true);
     }

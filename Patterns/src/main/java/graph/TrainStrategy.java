@@ -12,6 +12,9 @@ import java.util.stream.Collectors;
 public class TrainStrategy implements DistanceStrategy {
 
     @Getter
+    private final String name = "Train Strategy";
+
+    @Getter
     @Setter
     private int timeUnit = 1;
 
