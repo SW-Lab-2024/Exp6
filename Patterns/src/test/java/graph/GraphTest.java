@@ -14,18 +14,32 @@ public class GraphTest {
     private Node cityA;
     private Node cityB;
     private Node cityC;
+    private Node cityD;
+    private Node cityE;
 
     @BeforeEach
     public void setUp() {
         cityA = new Node();
         cityB = new Node();
         cityC = new Node();
-        graph = new Graph(new ArrayList<>(List.of(cityA, cityB, cityC)));
+        cityD = new Node();
+        cityE = new Node();
+        graph = new Graph(new ArrayList<>(List.of(cityA, cityB, cityC, cityD, cityE)));
 
-        // Set up the edges
+        //      The graph:
+        //           ---------- 20 -----------
+        //          |                         |
+        //          A --- 20 --- C --- 15 --- D
+        //          |            | \
+        //          5           10  \
+        //          |            |   -- 10 -- E
+        //           ----- B ----
         Edge.createEdge(cityA, cityB, false, 5); // Edge A-B with weight 5
         Edge.createEdge(cityB, cityC, false, 10); // Edge B-C with weight 10
         Edge.createEdge(cityA, cityC, false, 20); // Edge A-C with weight 20
+        Edge.createEdge(cityA, cityD, false, 20); // Edge A-D with weight 20
+        Edge.createEdge(cityC, cityD, false, 15); // Edge C-D with weight 15
+        Edge.createEdge(cityC, cityE, false, 10); // Edge C-E with weight 10
     }
 
     @Test
@@ -92,5 +106,71 @@ public class GraphTest {
 
         // Since both strategies now should produce equal distances, the result should be "Both are equally fast"
         Assertions.assertEquals("Both strategy are equally fast", result);
+    }
+
+    @Test
+    public void testPathPossibleWithoutDislikedCity() {
+        // City C is disliked
+        List<Node> dislikedCities = List.of(cityC);
+
+        // Test path from A to D without going through C
+        boolean pathExists = graph.isPathPossibleWithoutDislikedCities(cityA, cityD, dislikedCities);
+
+        // A -> B -> C -> D and A -> C -> D should be avoided, A -> D should be taken directly
+        Assertions.assertTrue(pathExists);
+    }
+
+    @Test
+    public void testPathPossibleWithoutDislikedCityButDirectedWay() {
+        // City A is disliked
+        List<Node> dislikedCities = List.of(cityA);
+
+        // Make the path between D and C one way
+        Edge edge = cityC.getEdgeByNeighbor(cityD);
+        Assertions.assertNotNull(edge);
+        edge.setDirected(true);
+        // C -> D (Accepted) | D -> C (Not Accepted)
+
+        // Test path from D to E without going through C
+        boolean pathExists = graph.isPathPossibleWithoutDislikedCities(cityD, cityE, dislikedCities);
+
+        // D -> A -> B -> C -> E should be avoided because of A and D -> C -> E is not permitted because of D -> C
+        Assertions.assertFalse(pathExists);
+    }
+
+    @Test
+    public void testPathNotPossibleDueToDislikedCity() {
+        // City C is disliked, making it impossible to reach A from E
+        List<Node> dislikedCities = List.of(cityC);
+
+        // Test path from A to E without going through C
+        boolean pathExists = graph.isPathPossibleWithoutDislikedCities(cityA, cityE, dislikedCities);
+
+        // No path from A to E is possible without going through C
+        Assertions.assertFalse(pathExists);
+    }
+
+    @Test
+    public void testPathPossibleWithNoDislikedCities() {
+        // No cities are disliked, should find a path from A to E
+        List<Node> dislikedCities = List.of();
+
+        // Test path from A to E with no disliked cities
+        boolean pathExists = graph.isPathPossibleWithoutDislikedCities(cityA, cityE, dislikedCities);
+
+        // A -> C -> E should be taken
+        Assertions.assertTrue(pathExists);
+    }
+
+    @Test
+    public void testPathNotPossibleWithAllDislikedCities() {
+        // All cities except A are disliked, making it impossible to reach D
+        List<Node> dislikedCities = List.of(cityB, cityC, cityD, cityE);
+
+        // Test path from A to D when all cities are disliked
+        boolean pathExists = graph.isPathPossibleWithoutDislikedCities(cityA, cityD, dislikedCities);
+
+        // No path should be possible
+        Assertions.assertFalse(pathExists);
     }
 }
