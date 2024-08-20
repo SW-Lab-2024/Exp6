@@ -3,8 +3,7 @@ package graph;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.*;
 
 public class Graph {
     @Getter
@@ -60,6 +59,29 @@ public class Graph {
         } else {
             return "Both strategy are equally fast";
         }
+    }
+
+    public boolean isPathPossibleWithoutDislikedCities(Node source, Node destination, List<Node> dislikedCities) {
+        this.resetVisits();
+
+        // Mark disliked cities as visited
+        for (Node dislikedCity : dislikedCities) {
+            dislikedCity.setVisited(true);
+        }
+
+        Queue<Node> nodes = new LinkedList<>();
+        nodes.add(source);
+        while (!nodes.isEmpty()) {
+            Node current = nodes.poll();
+            if (current.equals(destination)) {
+                return true;
+            }
+            if (!current.isVisited()) {
+                current.setVisited(true);
+                nodes.addAll(current.getAvailableNeighbors());
+            }
+        }
+        return false;
     }
 
     public void makeAllConnectionsOneWay() {

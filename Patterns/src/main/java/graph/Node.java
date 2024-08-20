@@ -1,12 +1,11 @@
 package graph;
 
-import java.util.ArrayList;
-import java.util.stream.Collectors;
-
-import org.javatuples.Pair;
-
 import lombok.Data;
 import lombok.Setter;
+import org.javatuples.Pair;
+
+import java.util.ArrayList;
+import java.util.stream.Collectors;
 
 @Data
 public class Node implements Comparable<Node> {
@@ -18,6 +17,14 @@ public class Node implements Comparable<Node> {
 
     public Node() {
         edges = new ArrayList<>();
+    }
+
+    public Edge getEdgeByNeighbor(Node neighbor) {
+        for (Edge edge : edges) {
+            if (edge.getNodes().contains(neighbor))
+                return edge;
+        }
+        return null;
     }
 
     public ArrayList<Pair<Node, Integer>> getAvailableWeightedNeighbors() {
