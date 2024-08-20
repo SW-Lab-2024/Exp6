@@ -2,6 +2,7 @@ package graph;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
@@ -39,13 +40,20 @@ class CalculateTrainDistanceCommand implements Command {
     @Override
     public void execute(Graph graph, Scanner scanner) {
         System.out.println("Enter source city name:");
-        String sourceName = scanner.nextLine();
+        String sourceName = scanner.next();
         System.out.println("Enter destination city name:");
-        String destinationName = scanner.nextLine();
+        String destinationName = scanner.next();
 
         Node source = graph.getNodeByName(sourceName);
+        if (source == null) {
+            System.out.println("Source does not exist.");
+            return;
+        }
         Node destination = graph.getNodeByName(destinationName);
-
+        if (destination == null) {
+            System.out.println("Destination does not exist.");
+            return;
+        }
         graph.setDistanceStrategy(new TrainStrategy());
         graph.calculateDistance(source);
 
@@ -57,12 +65,20 @@ class CalculateBusDistanceCommand implements Command {
     @Override
     public void execute(Graph graph, Scanner scanner) {
         System.out.println("Enter source city name:");
-        String sourceName = scanner.nextLine();
+        String sourceName = scanner.next();
         System.out.println("Enter destination city name:");
-        String destinationName = scanner.nextLine();
+        String destinationName = scanner.next();
 
         Node source = graph.getNodeByName(sourceName);
+        if (source == null) {
+            System.out.println("Source does not exist.");
+            return;
+        }
         Node destination = graph.getNodeByName(destinationName);
+        if (destination == null) {
+            System.out.println("Destination does not exist.");
+            return;
+        }
 
         graph.setDistanceStrategy(new BusStrategy());
         graph.calculateDistance(source);
@@ -75,12 +91,20 @@ class FindFasterRouteCommand implements Command {
     @Override
     public void execute(Graph graph, Scanner scanner) {
         System.out.println("Enter source city name:");
-        String sourceName = scanner.nextLine();
+        String sourceName = scanner.next();
         System.out.println("Enter destination city name:");
-        String destinationName = scanner.nextLine();
+        String destinationName = scanner.next();
 
         Node source = graph.getNodeByName(sourceName);
+        if (source == null) {
+            System.out.println("Source does not exist.");
+            return;
+        }
         Node destination = graph.getNodeByName(destinationName);
+        if (destination == null) {
+            System.out.println("Destination does not exist.");
+            return;
+        }
 
         String result = graph.findFasterStrategy(source, destination);
         System.out.println(result);
@@ -90,27 +114,46 @@ class FindFasterRouteCommand implements Command {
 class CheckPathAvoidingCityCommand implements Command {
     @Override
     public void execute(Graph graph, Scanner scanner) {
+        scanner.nextLine();
+
         System.out.println("Enter source city name:");
         String sourceName = scanner.nextLine();
+
         System.out.println("Enter destination city name:");
         String destinationName = scanner.nextLine();
+
         System.out.println("Enter disliked city names separated by whitespace:");
         String dislikedCityNames = scanner.nextLine();
 
         Node source = graph.getNodeByName(sourceName);
         Node destination = graph.getNodeByName(destinationName);
 
-        // Convert dislikedCityNames to a List<Node>
+        if (source == null) {
+            System.out.println("Source city " + sourceName + " doesn't exist.");
+            return;
+        }
+        if (destination == null) {
+            System.out.println("Destination city " + destinationName + " doesn't exist.");
+            return;
+        }
+
         List<Node> dislikedCities = Arrays.stream(dislikedCityNames.split("\\s+"))
-                .map(graph::getNodeByName)
+                .map(name -> {
+                    Node node = graph.getNodeByName(name);
+                    if (node == null) {
+                        System.out.println("Disliked city " + name + " doesn't exist.");
+                    }
+                    return node;
+                })
+                .filter(Objects::nonNull)
                 .collect(Collectors.toList());
 
         boolean pathExists = graph.isPathPossibleWithoutDislikedCities(source, destination, dislikedCities);
 
         if (pathExists) {
-            System.out.println("It is possible to reach city " + destinationName + " without going through the disliked cities: " + dislikedCityNames + " from " + sourceName + ".");
+            System.out.println("It is possible to reach city " + destinationName + " from " + sourceName + " without going through the disliked cities: " + dislikedCityNames + ".");
         } else {
-            System.out.println("It is not possible to reach city " + destinationName + " without going through the disliked cities: " + dislikedCityNames + " from " + sourceName + ".");
+            System.out.println("It is not possible to reach city " + destinationName + " from " + sourceName + " without going through the disliked cities: " + dislikedCityNames + ".");
         }
     }
 }
