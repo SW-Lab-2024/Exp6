@@ -10,6 +10,9 @@ public class Graph {
     private ArrayList<Node> graph;
     @Setter
     private DistanceStrategy distanceStrategy;
+    @Setter
+    @Getter
+    private int timeUnit = 1;
 
 
     public Graph(ArrayList<Node> graph) {
@@ -31,20 +34,17 @@ public class Graph {
         }
     }
 
-    public String findFasterStrategy(Node source, Node destination, int timeUnit) {
+    public String findFasterStrategy(Node source, Node destination) {
         // Save the current DistanceStrategy of the class
         DistanceStrategy temp = distanceStrategy;
 
         // Calculate distance using TrainStrategy (BFS)
-        TrainStrategy trainStrategy = new TrainStrategy();
-        trainStrategy.setTimeUnit(timeUnit);
-        this.setDistanceStrategy(trainStrategy);
+        this.setDistanceStrategy(new TrainStrategy());
         this.calculateDistance(source);
         int trainDistance = destination.getDistance();
 
         // Calculate distance using BusStrategy (Dijkstra)
-        BusStrategy busStrategy = new BusStrategy();
-        this.setDistanceStrategy(busStrategy);
+        this.setDistanceStrategy(new BusStrategy());
         this.calculateDistance(source);
         int busDistance = destination.getDistance();
 
@@ -53,9 +53,9 @@ public class Graph {
 
         // Compare the distance and return the best strategy
         if (trainDistance < busDistance) {
-            return trainStrategy.getName();
+            return TrainStrategy.getName();
         } else if (busDistance < trainDistance) {
-            return busStrategy.getName();
+            return BusStrategy.getName();
         } else {
             return "Both strategy are equally fast";
         }

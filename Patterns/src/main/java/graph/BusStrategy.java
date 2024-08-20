@@ -9,7 +9,7 @@ import java.util.stream.Collectors;
 public class BusStrategy implements DistanceStrategy {
 
     @Getter
-    private final String name = "Bus Strategy";
+    private static final String name = "Bus Strategy";
 
     @Override
     public void calculateDistance(Graph graph, Node source) {

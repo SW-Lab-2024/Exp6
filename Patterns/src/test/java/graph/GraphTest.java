@@ -86,7 +86,8 @@ public class GraphTest {
 
     @Test
     public void testWhenTrainStrategyIsFaster() {
-        String result = graph.findFasterStrategy(cityA, cityC, 1);
+        graph.setTimeUnit(1);
+        String result = graph.findFasterStrategy(cityA, cityC);
 
         // Since TrainStrategy should reach C directly with 1 unit per step, it should be faster.
         Assertions.assertEquals("Train Strategy", result);
@@ -94,7 +95,8 @@ public class GraphTest {
 
     @Test
     public void testWhenBusStrategyIsFaster() {
-        String result = graph.findFasterStrategy(cityA, cityC, 20);
+        graph.setTimeUnit(20);
+        String result = graph.findFasterStrategy(cityA, cityC);
 
         // Since TrainStrategy is slow (15 units per step), BusStrategy (using Dijkstra) should be faster
         Assertions.assertEquals("Bus Strategy", result);
@@ -102,7 +104,8 @@ public class GraphTest {
 
     @Test
     public void testWhenBothStrategyAreEquallyFast() {
-        String result = graph.findFasterStrategy(cityA, cityC, 15);
+        graph.setTimeUnit(15);
+        String result = graph.findFasterStrategy(cityA, cityC);
 
         // Since both strategies now should produce equal distances, the result should be "Both are equally fast"
         Assertions.assertEquals("Both strategy are equally fast", result);

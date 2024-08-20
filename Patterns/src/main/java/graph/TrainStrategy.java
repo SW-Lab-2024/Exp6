@@ -1,7 +1,6 @@
 package graph;
 
 import lombok.Getter;
-import lombok.Setter;
 import org.javatuples.Pair;
 
 import java.util.ArrayList;
@@ -12,19 +11,15 @@ import java.util.stream.Collectors;
 public class TrainStrategy implements DistanceStrategy {
 
     @Getter
-    private final String name = "Train Strategy";
-
-    @Getter
-    @Setter
-    private int timeUnit = 1;
+    private static final String name = "Train Strategy";
 
     @Override
     public void calculateDistance(Graph graph, Node source) {
         graph.resetVisits();
-        bfs(source);
+        bfs(source, graph.getTimeUnit());
     }
 
-    private void bfs(Node source) {
+    private void bfs(Node source, int timeUnit) {
         Queue<Pair<Node, Integer>> nodes = new LinkedList<>();
         nodes.add(new Pair<>(source, 0));
         while (!nodes.isEmpty()) {
@@ -36,7 +31,7 @@ public class TrainStrategy implements DistanceStrategy {
                 frontNode.setDistance(distance);
                 nodes.addAll(frontNode.getAvailableNeighbors()
                         .stream()
-                        .map(neighbor -> new Pair<>(neighbor, distance + this.getTimeUnit()))
+                        .map(neighbor -> new Pair<>(neighbor, distance + timeUnit))
                         .collect(Collectors.toCollection(ArrayList::new)));
             }
         }
