@@ -10,13 +10,15 @@ import java.util.stream.Collectors;
 @Data
 public class Node implements Comparable<Node> {
     private final ArrayList<Edge> edges;
+    private String name;
     @Setter
     private boolean visited;
     @Setter
     private int distance;
 
-    public Node() {
+    public Node(String name) {
         edges = new ArrayList<>();
+        this.name = name;
     }
 
     public Edge getEdgeByNeighbor(Node neighbor) {

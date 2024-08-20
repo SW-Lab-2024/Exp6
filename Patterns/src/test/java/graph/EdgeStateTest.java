@@ -17,8 +17,8 @@ class EdgeStateTest {
 
     @BeforeEach
     void setUp() {
-        cityA = new Node();
-        cityB = new Node();
+        cityA = new Node("A");
+        cityB = new Node("B");
         edge = Edge.createEdge(cityA, cityB, false, 5); // Initially non-directed
     }
 
@@ -49,7 +49,7 @@ class EdgeStateTest {
 
     @Test
     void testMultipleEdgesTransition() {
-        Node cityC = new Node();
+        Node cityC = new Node("C");
         Edge edge2 = Edge.createEdge(cityB, cityC, false, 7);
         Edge edge3 = Edge.createEdge(cityA, cityC, false, 10);
         Graph graph = new Graph(new ArrayList<>(List.of(cityA, cityB, cityC)));

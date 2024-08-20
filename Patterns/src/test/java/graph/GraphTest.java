@@ -19,11 +19,11 @@ public class GraphTest {
 
     @BeforeEach
     public void setUp() {
-        cityA = new Node();
-        cityB = new Node();
-        cityC = new Node();
-        cityD = new Node();
-        cityE = new Node();
+        cityA = new Node("A");
+        cityB = new Node("B");
+        cityC = new Node("C");
+        cityD = new Node("D");
+        cityE = new Node("E");
         graph = new Graph(new ArrayList<>(List.of(cityA, cityB, cityC, cityD, cityE)));
 
         //      The graph:

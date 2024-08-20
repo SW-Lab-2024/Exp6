@@ -19,6 +19,14 @@ public class Graph {
         this.graph = graph;
     }
 
+    public Node getNodeByName(String name) {
+        for (Node node : graph) {
+            if (node.getName().equals(name))
+                return node;
+        }
+        return null;
+    }
+
     public void resetVisits() {
         for (Node v : this.getGraph()) {
             v.setVisited(false);

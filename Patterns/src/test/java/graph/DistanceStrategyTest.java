@@ -17,9 +17,9 @@ class DistanceStrategyTest {
 
     @BeforeEach
     void setUp() {
-        cityA = new Node();
-        cityB = new Node();
-        cityC = new Node();
+        cityA = new Node("A");
+        cityB = new Node("B");
+        cityC = new Node("C");
 
         graph = new Graph(new ArrayList<>(List.of(cityA, cityB, cityC)));
 
