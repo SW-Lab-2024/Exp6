@@ -24,8 +24,9 @@ class DistanceStrategyTest {
         graph = new Graph(new ArrayList<>(List.of(cityA, cityB, cityC)));
 
 //      The graph:
-//          A ---20--- C
-//          |-5- B -10-|
+//          A ------ 20 ------ C
+//          |                  |
+//           -- 5 -- B -- 10 --
         Edge.createEdge(cityA, cityB, false, 5); // Edge A-B with weight 5
         Edge.createEdge(cityB, cityC, false, 10); // Edge B-C with weight 10
         Edge.createEdge(cityA, cityC, false, 20); // Edge A-C with weight 20
