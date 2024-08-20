@@ -1,6 +1,108 @@
 # Exp6
 Object Oriented Design Patterns and Code Refactoring in Java
 
+
+### فاز اول
+#### پیاده‌سازی الگوهای طراحی State و Strategy
+
+#### مقدمه
+
+در این پروژه، هدف پیاده‌سازی سیستمی برای اطلاع‌رسانی به شهروندان در مورد میزان فاصله و هزینه میان شهرهاست. این سیستم استانی شامل شهرهایی است که به وسیله مسیرهای مختلف به هم متصل شده‌اند. این مسیرها می‌توانند به صورت یک‌طرفه یا دوطرفه تنظیم شوند و دو روش تردد (قطار سریع‌السیر و اتوبوس) برای عبور و مرور میان شهرها در نظر گرفته شده است. برای مدیریت این پیچیدگی‌ها، از الگوهای طراحی **State** و **Strategy** بهره گرفته شده است.
+
+---
+
+#### الگوی طراحی State
+
+الگوی طراحی State به ما اجازه می‌دهد که شیء بتواند رفتار خود را هنگامی که حالت داخلی‌اش تغییر می‌کند، تغییر دهد. در این پروژه، حالت‌های مختلف گراف (جهت‌دار و غیرجهت‌دار بودن) به عنوان حالت‌های مختلف سیستم پیاده‌سازی شده‌اند.
+
+##### پیاده‌سازی:
+
+1. **کلاس `DirectedState` و `NonDirectedState`:**
+   - این دو کلاس نمایانگر حالت‌های مختلف گراف هستند. هر یک از این کلاس‌ها رفتار متفاوتی را برای گراف تعریف می‌کنند. برای مثال، در حالت `DirectedState`، یال‌ها به صورت جهت‌دار هستند، در حالی که در حالت `NonDirectedState`، یال‌ها به صورت غیرجهت‌دار تعریف می‌شوند.
+
+2. **کلاس `Graph`:**
+   - این کلاس نقش Context را ایفا می‌کند و با تغییر حالت خود (از طریق متدهایی مانند `setState`)، می‌تواند رفتار سیستم را تغییر دهد. کلاس Graph می‌تواند به سادگی بین حالت‌های `DirectedState` و `NonDirectedState` جابجا شود.
+
+```java
+public class Graph {
+    private State state;
+
+    public void setState(State state) {
+        this.state = state;
+    }
+
+    public void addEdge(Node source, Node destination, int weight) {
+        state.addEdge(source, destination, weight);
+    }
+}
+```
+
+---
+
+#### الگوی طراحی Strategy
+
+الگوی طراحی Strategy به ما اجازه می‌دهد که یک خانواده از الگوریتم‌ها را تعریف کنیم و هر کدام را به صورت جداگانه به عنوان یک استراتژی پیاده‌سازی کنیم. سپس، این استراتژی‌ها می‌توانند به صورت دینامیک در برنامه جایگزین یکدیگر شوند.
+
+##### پیاده‌سازی:
+
+1. **کلاس‌های `TrainStrategy` و `BusStrategy`:**
+   - این دو کلاس، استراتژی‌های مختلف برای محاسبه زمان و هزینه سفر بین شهرها را پیاده‌سازی می‌کنند. در `TrainStrategy`، زمان سفر ثابت و معادل ۱ واحد زمانی در نظر گرفته شده است، در حالی که در `BusStrategy`، این زمان می‌تواند متغیر باشد.
+
+2. **کلاس `DistanceStrategy`:**
+   - این کلاس به عنوان یک اینترفیس یا کلاس والد برای استراتژی‌های مختلف عمل می‌کند و متدهایی مانند `calculateDistance` و `calculateCost` را تعریف می‌کند که در هر یک از استراتژی‌ها به صورت متفاوت پیاده‌سازی می‌شوند.
+
+```java
+public interface DistanceStrategy {
+    int calculateDistance(Edge edge);
+    int calculateCost(Edge edge);
+}
+
+public class TrainStrategy implements DistanceStrategy {
+    @Override
+    public int calculateDistance(Edge edge) {
+        return 1; // زمان ثابت برای قطار سریع‌السیر
+    }
+
+    @Override
+    public int calculateCost(Edge edge) {
+        return edge.getWeight(); // هزینه بر اساس وزن یال
+    }
+}
+
+public class BusStrategy implements DistanceStrategy {
+    @Override
+    public int calculateDistance(Edge edge) {
+        return edge.getWeight(); // زمان بر اساس وزن یال
+    }
+
+    @Override
+    public int calculateCost(Edge edge) {
+        return edge.getWeight() * 2; // هزینه دو برابر وزن یال
+    }
+}
+```
+
+3. **کلاس `Edge`:**
+   - این کلاس نمایانگر یک یال بین دو گره است که شامل اطلاعات مربوط به وزن یال (که می‌تواند نشان‌دهنده هزینه یا زمان باشد) است. کلاس‌های استراتژی از این اطلاعات برای محاسبه زمان و هزینه استفاده می‌کنند.
+
+```java
+public class Edge {
+    private Node source;
+    private Node destination;
+    private int weight;
+
+    public int getWeight() {
+        return weight;
+    }
+}
+```
+
+---
+
+#### نجمع بندی
+
+در این پروژه، با استفاده از الگوی طراحی **State** توانستیم حالت‌های مختلف سیستم (جهت‌دار و غیرجهت‌دار بودن گراف) را مدیریت کنیم و با بهره‌گیری از الگوی طراحی **Strategy** روش‌های مختلف محاسبه زمان و هزینه سفر را به صورت استراتژی‌های قابل تغییر پیاده‌سازی کنیم. این طراحی به ما امکان می‌دهد تا بدون تغییرات عمده در ساختار کد، رفتار سیستم را تغییر داده و استراتژی‌های مختلف را به راحتی اعمال کنیم.
+
 # فاز دوم
 
 ## Facade
