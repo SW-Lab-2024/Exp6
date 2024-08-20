@@ -19,12 +19,13 @@ public class Edge {
         this.state = directed ? new DirectedState(this) : new NonDirectedState(this);
     }
 
-    public static void createEdge(Node a, Node b, boolean directed, int weight) {
+    public static Edge createEdge(Node a, Node b, boolean directed, int weight) {
         Edge newEdge = new Edge(a, b, directed, weight);
         a.getEdges().add(newEdge);
         if (!directed) {
             b.getEdges().add(newEdge);  // Non-directed edge should be added to both nodes' edge lists
         }
+        return newEdge;
     }
 
     public boolean isDirected() {

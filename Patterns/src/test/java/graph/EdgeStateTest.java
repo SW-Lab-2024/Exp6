@@ -19,8 +19,7 @@ class EdgeStateTest {
     void setUp() {
         cityA = new Node();
         cityB = new Node();
-        Edge.createEdge(cityA, cityB, false, 5); // Initially non-directed
-        edge = cityA.getEdges().get(0);
+        edge = Edge.createEdge(cityA, cityB, false, 5); // Initially non-directed
     }
 
     @Test
@@ -51,10 +50,8 @@ class EdgeStateTest {
     @Test
     void testMultipleEdgesTransition() {
         Node cityC = new Node();
-        Edge.createEdge(cityB, cityC, false, 7);
-        Edge.createEdge(cityA, cityC, false, 10);
-        Edge edge2 = cityB.getEdges().get(1);
-        Edge edge3 = cityA.getEdges().get(1);
+        Edge edge2 = Edge.createEdge(cityB, cityC, false, 7);
+        Edge edge3 = Edge.createEdge(cityA, cityC, false, 10);
         Graph graph = new Graph(new ArrayList<>(List.of(cityA, cityB, cityC)));
         graph.makeAllConnectionsOneWay();
 
