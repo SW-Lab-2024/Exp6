@@ -1,8 +1,8 @@
 package MiniJava.codeGenerator;
 
 public class ImmediateAddress extends Address {
-    public ImmediateAddress(int num, varType varType) {
-        super(num, varType);
+    public ImmediateAddress(int num, varType varType,boolean isNull) {
+        super(num, varType, isNull);
     }
 
     @Override
