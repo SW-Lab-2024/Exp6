@@ -61,6 +61,7 @@ class _3AddressCode {
     public Address Operand1;
     public Address Operand2;
     public Address Operand3;
+    public NullAddress nullAddress;
 
     public _3AddressCode() {
 
@@ -71,17 +72,18 @@ class _3AddressCode {
         Operand1 = opr1;
         Operand2 = opr2;
         Operand3 = opr3;
+        nullAddress =NullAddress.getInstance(98273983, varType.Address, true);
     }
 
     public String toString() {
-        if (operation == null) return "";
+        if (operation.equals(Operation.NULLOP)) return "";
         StringBuffer res = new StringBuffer("(");
         res.append(operation.toString()).append(",");
-        if (Operand1 != null) res.append(Operand1.toString());
+        if (!Operand1.equals(nullAddress)) res.append(Operand1.toString());
         res.append(",");
-        if (Operand2 != null) res.append(Operand2.toString());
+        if (!Operand2.equals(nullAddress) )res.append(Operand2.toString());
         res.append(",");
-        if (Operand3 != null) res.append(Operand3.toString());
+        if (!Operand3.equals(nullAddress) )res.append(Operand3.toString());
         res.append(")");
 
         return res.toString();
