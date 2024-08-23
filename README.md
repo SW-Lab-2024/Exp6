@@ -124,6 +124,11 @@ public class Edge {
 در ادامه هم پلاگین های مربوط به ورژن کامپایلر و encoding را افزودیم:
 ![image](https://github.com/user-attachments/assets/d1428295-b42e-4512-9f1c-f3b86d393961)
 
+## Refactoring: Introduce Null Object
+برای این بازآرایی باتوجه به حجم زیاد operation و یا operand های null تصمیم بر این گرفتیم که برای پیشگیری از اختلال کارکرد احتمالی پروژه یک کلاس null و همچنین یک enum null معرفی کنیم. null operand با توجه به اینکه از جنس آدرس بوده و در کل تنها ما یک شی null از آدرس خواهیم داشت(چرا که تفاوت خاصی در شی های null و موحودیت آنها نیست) پس از ارث بری کلاس null از کلاس address و افزودن فیلد isnull به تمام کلاس های فرزند address، برای nullAddress یک کانستراکتور singleton ساختیم.از آنجا به بعد در هر جای کد برای آدرسی که مقدار آن معادل null خواهد بود همان تنها شی از nullAddress را قرار دادیم.مزیت اینکار این بود که حتی برای مقایسه های مربوط به نال بودن یک آدرس هم میتوانستیم از دستور equals(nullAddress) استفاده کنیم.
+![image](https://github.com/user-attachments/assets/b707e20f-e491-4b98-b0db-3af63cedea5e)
+
+
 
 # سوالات
 
