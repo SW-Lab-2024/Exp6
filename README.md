@@ -128,6 +128,43 @@ public class Edge {
 برای این بازآرایی باتوجه به حجم زیاد operation و یا operand های null تصمیم بر این گرفتیم که برای پیشگیری از اختلال کارکرد احتمالی پروژه یک کلاس null و همچنین یک enum null معرفی کنیم. null operand با توجه به اینکه از جنس آدرس بوده و در کل تنها ما یک شی null از آدرس خواهیم داشت(چرا که تفاوت خاصی در شی های null و موحودیت آنها نیست) پس از ارث بری کلاس null از کلاس address و افزودن فیلد isnull به تمام کلاس های فرزند address، برای nullAddress یک کانستراکتور singleton ساختیم.از آنجا به بعد در هر جای کد برای آدرسی که مقدار آن معادل null خواهد بود همان تنها شی از nullAddress را قرار دادیم.مزیت اینکار این بود که حتی برای مقایسه های مربوط به نال بودن یک آدرس هم میتوانستیم از دستور equals(nullAddress) استفاده کنیم.
 ![image](https://github.com/user-attachments/assets/b707e20f-e491-4b98-b0db-3af63cedea5e)
 
+## Refactoring: Simplifying Conditionals
+استفاده از Guard Clause در شرط‌های مربوط به Goto:
+
+شرط مربوط به Goto به عنوان یک Guard Clause اضافه شد تا در صورت برآورده شدن این شرط، به سادگی به تکرار بعدی لوپ برویم. این باعث می‌شود که کد اصلی ساده‌تر و خواناتر شود
+
+if (cols[i].startsWith("Goto")) {
+    String temp = cols[i].substring(5);
+    try {
+        nonTerminals.put(i, NonTerminal.valueOf(temp));
+    } catch (Exception e) {
+        ErrorHandler.printError(e.getMessage());
+    }
+    continue;  // استفاده از Guard Clause برای ادامه دادن به تکرار بعدی
+}
+terminals.put(i, new Token(Token.getTyepFormString(cols[i]), cols[i]));
+
+
+ساده‌سازی شرط‌های مربوط به acc و terminals:شرط‌های مربوط به acc، terminals و nonTerminals به صورت Guard Clause پیاده‌سازی شدند. این کار باعث شد که جریان اصلی کد ساده‌تر و بدون شرط‌های تو در تو باشد. همچنین، اگر هیچ‌کدام از این شرایط برقرار نباشد، یک Exception پرتاب می‌شود تا از وقوع شرایط غیرمنتظره جلوگیری شود.
+
+if (cols[j].equals("acc")) {
+    actionTable.get(actionTable.size() - 1).put(terminals.get(j), new Action(act.accept, 0));
+    continue; 
+}
+
+if (terminals.containsKey(j)) {
+    Token t = terminals.get(j);
+    Action a = new Action(cols[j].charAt(0) == 'r' ? act.reduce : act.shift, Integer.parseInt(cols[j].substring(1)));
+    actionTable.get(actionTable.size() - 1).put(t, a);
+    continue; 
+}
+
+if (nonTerminals.containsKey(j)) {
+    gotoTable.get(gotoTable.size() - 1).put(nonTerminals.get(j), Integer.parseInt(cols[j]));
+    continue;  
+}
+
+throw new Exception("Unexpected condition encountered in ParseTable");
 
 
 # سوالات
